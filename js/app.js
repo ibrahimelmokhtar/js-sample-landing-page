@@ -30,6 +30,19 @@
  *
 */
 
+/**
+ * collect (data-nav) value from each section
+ * @returns a list, of type (String), with sections' (data-nav) values
+ */
+ function collectDataFromSections(){
+    const sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
+    let sectionsDataList = [];      // create empty list to be returned
+    // extract (data-nav) attribute value, then add it into the returned list:
+    sectionsList.forEach(function(singleSection){
+        sectionsDataList.push(singleSection.getAttribute('data-nav'));
+    });
+    return sectionsDataList;
+}
 
 
 /**
@@ -39,7 +52,23 @@
 */
 
 // build the nav
-
+function buildNavBar(){
+    // collect (data-nav) attributes from page sections:
+    const sectionsDataList = collectDataFromSections();
+    // get <nav> element by its id:
+    let navBarList = document.querySelector('#navbar__list');
+    // create virtual element:
+    let fragment = document.createDocumentFragment();
+    // construct <li> element for each section:
+    for (let i=0; i<sectionsDataList.length; i++){
+        let singleListItem = document.createElement('li');      // create empty <li> element
+        singleListItem.textContent = sectionsDataList[i]; //set its textContent value
+        fragment.appendChild(singleListItem);       // append actual <li> element to virtual element
+        console.log(fragment.children);
+    }
+    // append virtual element to actual <ul>:
+    navBarList.appendChild(fragment);
+}
 
 // Add class 'active' to section when near top of viewport
 
@@ -54,6 +83,7 @@
 */
 
 // Build menu
+document.addEventListener('DOMContentLoaded', buildNavBar);     // wait until content is loaded into DOM
 
 // Scroll to section on link click
 
