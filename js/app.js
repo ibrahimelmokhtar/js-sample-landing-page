@@ -46,7 +46,9 @@ const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> elem
     });
 }
 
-
+/**
+ * update the status of active (section)
+ */
 function updateActiveClass(sectionInViewport){
     sectionInViewport.classList.add('active__section');       // add ('active__section') class
     // remove ('active__section') class from other sections:
@@ -57,6 +59,40 @@ function updateActiveClass(sectionInViewport){
     }
 }
 
+/**
+ * update the status of active (navigation list item)
+ */
+function updateActiveLinkClass(listItem){
+    let linksList = navBarMenu.querySelectorAll('li a');
+    listItem.classList.add('active__menu__link');       // add ('active__menu__link') class
+    // remove ('active__menu__link') class from other sections:
+    for (let j=0; j<linksList.length; j++){
+        if (linksList[j] !== listItem && linksList[j].classList.contains('active__menu__link')){
+            linksList[j].classList.remove('active__menu__link');
+        }
+    }
+}
+
+/**
+ * clear first navigation list item when scrolling above it
+ */
+function clearNavigationActiveStatus(){
+    // current scroll position in viewport:
+    let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
+    // select first section and its associated navigation list item:
+    let section = sectionsList[0];
+    let listItem = navBarMenu.querySelector(`li a[href="#${section.getAttribute('id')}"]`);
+
+    // required conditions for specific section to be in viewport:
+    let condition = (scrollPosition < section.offsetTop - section.offsetHeight*Y_FACTOR);
+
+    if (condition){
+        // check if that specific navigation list item DO have ('active__menu__link') class:
+        if (listItem.classList.contains('active__menu__link')){
+            listItem.classList.remove('active__menu__link');
+        }
+    }
+}
 
 /**
  * End Helper Functions
@@ -90,17 +126,25 @@ function sectionInViewport(){
     // check each section on the page:
     for (let i=0; i<sectionsList.length; i++){
         let section = sectionsList[i];      // select specific section
+        // select navigation list item associated with this specific section
+        let listItem = navBarMenu.querySelector(`li a[href="#${section.getAttribute('id')}"]`);
+
         // required conditions for specific section to be in viewport:
         let condition = (scrollPosition >= section.offsetTop - section.offsetHeight*Y_FACTOR) &&
-                        (scrollPosition < section.offsetTop + section.offsetHeight - section.offsetHeight*Y_FACTOR);
+        (scrollPosition < section.offsetTop + section.offsetHeight - section.offsetHeight*Y_FACTOR);
 
         if (condition){
-                // check if that specific section do NOT have ('active__section') class:
-                if (!section.classList.contains('active__section')){
-                    updateActiveClass(section);
-                }
+            // check if that specific section do NOT have ('active__section') class:
+            //          OR: that specific navigation list item do NOT have ('active__menu__link') class:
+            if (!section.classList.contains('active__section') || !listItem.classList.contains('active__menu__link')){
+                updateActiveClass(section);         // update sections status
+                updateActiveLinkClass(listItem);    // update navigation items status
+            }
         }
     }
+
+    // clear active status from the first navigation element:
+    clearNavigationActiveStatus();
 }
 
 // Scroll to anchor ID using scrollTO event
