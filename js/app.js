@@ -23,9 +23,10 @@
  *
 */
 
+const sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
 let sectionsIdList = [];    // create empty list to collect (id) attributes
 let sectionsDataList = [];  // create empty list to collect (data-nav) attributes
-
+const Y_FACTOR = 0.25;      // to sense the section before reaching it specifically
 
 /**
  * End Global Variables
@@ -37,12 +38,22 @@ let sectionsDataList = [];  // create empty list to collect (data-nav) attribute
  * collect (data-nav) value from each section
  */
  function collectDataFromSections(){
-    const sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
     // extract (data-nav) attribute value, then add it into the returned list:
     sectionsList.forEach(function(singleSection){
         sectionsDataList.push(singleSection.getAttribute('data-nav'));
         sectionsIdList.push(singleSection.getAttribute('id'));
     });
+}
+
+
+function updateActiveClass(sectionInViewport){
+    sectionInViewport.classList.add('active__section');       // add ('active__section') class
+    // remove ('active__section') class from other sections:
+    for (let j=0; j<sectionsList.length; j++){
+        if (sectionsList[j] !== sectionInViewport && sectionsList[j].classList.contains('active__section')){
+            sectionsList[j].classList.remove('active__section')
+        }
+    }
 }
 
 
@@ -72,7 +83,24 @@ function buildNavBar(){
 }
 
 // Add class 'active' to section when near top of viewport
+function sectionInViewport(){
+    // current scroll position in viewport:
+    let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
+    // check each section on the page:
+    for (let i=0; i<sectionsList.length; i++){
+        let section = sectionsList[i];      // select specific section
+        // required conditions for specific section to be in viewport:
+        let condition = (scrollPosition >= section.offsetTop - section.offsetHeight*Y_FACTOR) &&
+                        (scrollPosition < section.offsetTop + section.offsetHeight - section.offsetHeight*Y_FACTOR);
 
+        if (condition){
+                // check if that specific section do NOT have ('active__section') class:
+                if (!section.classList.contains('active__section')){
+                    updateActiveClass(section);
+                }
+        }
+    }
+}
 
 // Scroll to anchor ID using scrollTO event
 
@@ -89,3 +117,4 @@ document.addEventListener('DOMContentLoaded', buildNavBar);     // wait until co
 // Scroll to section on link click
 
 // Set sections as active
+document.addEventListener('scroll', sectionInViewport);     // listen to (scoll) to change (active__section) class
