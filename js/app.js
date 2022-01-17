@@ -27,6 +27,7 @@ const sectionsList = document.querySelectorAll('section');  // get all <section>
 let sectionsIdList = [];    // create empty list to collect (id) attributes
 let sectionsDataList = [];  // create empty list to collect (data-nav) attributes
 const Y_FACTOR = 0.25;      // to sense the section before reaching it specifically
+const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> element by its class name
 
 /**
  * End Global Variables
@@ -103,6 +104,22 @@ function sectionInViewport(){
 }
 
 // Scroll to anchor ID using scrollTO event
+function scrollToAnchor(event){
+    // prevent default scrollong behavior:
+    event.preventDefault();
+    // construct the scrolling behavior options:
+    const scrollOptions = {
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'start'
+    };
+    // get (href) attribute value from the clicked <li> item:
+    const selectedElement = document.querySelector(event.target.getAttribute('href'));
+    // check if clicked item already has a (href) attribute; to prevent (Uncaught TypeError) errors:
+    if (selectedElement !== null){      // it's one of the <li> items
+        selectedElement.scrollIntoView(scrollOptions);   // scroll into desired view:
+    }
+}
 
 
 /**
@@ -115,6 +132,7 @@ function sectionInViewport(){
 document.addEventListener('DOMContentLoaded', buildNavBar);     // wait until content is loaded into DOM
 
 // Scroll to section on link click
+navBarMenu.addEventListener('click', scrollToAnchor);           // add scrolling behavior to the clicked <li> item
 
 // Set sections as active
 document.addEventListener('scroll', sectionInViewport);     // listen to (scoll) to change (active__section) class
