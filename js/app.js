@@ -23,10 +23,7 @@
  *
 */
 
-const HIDE_TIMEOUT = 3*1000;
-const sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
-let sectionsIdList = [];    // create empty list to collect (id) attributes
-let sectionsDataList = [];  // create empty list to collect (data-nav) attributes
+const HIDE_TIMEOUT = 2*1000;    // delay before hiding the page navigation bar
 const Y_FACTOR = 0.25;      // to sense the section before reaching it specifically
 const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> element by its class name
 
@@ -40,17 +37,22 @@ const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> elem
  * collect (data-nav) value from each section
  */
  function collectDataFromSections(){
+    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
+    let sectionsDataList = [];
+    let sectionsIdList = [];
     // extract (data-nav) attribute value, then add it into the returned list:
     sectionsList.forEach(function(singleSection){
         sectionsDataList.push(singleSection.getAttribute('data-nav'));
         sectionsIdList.push(singleSection.getAttribute('id'));
     });
+    return [sectionsDataList, sectionsIdList];
 }
 
 /**
  * update the status of active (section)
  */
 function updateActiveClass(sectionInViewport){
+    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
     sectionInViewport.classList.add('active__section');       // add ('active__section') class
     // remove ('active__section') class from other sections:
     for (let j=0; j<sectionsList.length; j++){
@@ -78,6 +80,7 @@ function updateActiveLinkClass(listItem){
  * clear first navigation list item when scrolling above it
  */
 function clearNavigationActiveStatus(){
+    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
     // current scroll position in viewport:
     let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
     // select first section and its associated navigation list item:
@@ -104,9 +107,16 @@ function clearNavigationActiveStatus(){
 // build the nav
 function buildNavBar(){
     // collect (data-nav) attributes from page sections:
-    collectDataFromSections();
+    let sectionsDataList, sectionsIdList;
+    [sectionsDataList, sectionsIdList] = collectDataFromSections();
+
     // get <nav> element by its id:
     let navBarList = document.querySelector('#navbar__list');
+    // clear <nav> list items:
+    while (navBarList.children.length !== 0){
+        navBarList.firstChild.remove();
+    }
+
     // create virtual element:
     let fragment = document.createDocumentFragment();
     // construct <li> element for each section:
@@ -122,6 +132,7 @@ function buildNavBar(){
 
 // Add class 'active' to section when near top of viewport
 function sectionInViewport(){
+    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
     // current scroll position in viewport:
     let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
     // check each section on the page:
@@ -207,4 +218,30 @@ document.addEventListener('scroll', function(){
         }
 
     }, HIDE_TIMEOUT);   // (HIDE_TIMEOUT) is set at the beggining of the file
+});
+
+
+// motion of the side button:
+let btnAddNewSectionContainer = document.querySelector('.btn__container');
+let btnAddNewSection = document.querySelector('.hide__btn__text__container');
+let btnAddNewSectionText = document.querySelector('.hide__btn__text');
+
+btnAddNewSectionContainer.addEventListener('pointerenter', function(){
+    if (btnAddNewSection.classList.contains('hide__btn__text__container')){
+        btnAddNewSection.classList.remove('hide__btn__text__container');
+        btnAddNewSection.classList.add('btn__text__container');
+
+        btnAddNewSectionText.classList.remove('hide__btn__text');
+        btnAddNewSectionText.classList.add('btn__text');
+    }
+});
+
+btnAddNewSectionContainer.addEventListener('pointerleave', function(){
+    if (btnAddNewSection.classList.contains('btn__text__container')){
+        btnAddNewSection.classList.remove('btn__text__container');
+        btnAddNewSection.classList.add('hide__btn__text__container');
+
+        btnAddNewSectionText.classList.remove('btn__text');
+        btnAddNewSectionText.classList.add('hide__btn__text');
+    }
 });

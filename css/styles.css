@@ -237,3 +237,53 @@ section.active__section .landing__container::after {
 		           rotate(-360deg);
 	}
 }
+
+
+
+.btn__container {
+    border-radius: 100px;
+    box-shadow: 10px 10px 10px #333;
+    border: 1px solid khaki;
+    padding: 0.5em;
+    margin-bottom: 2em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    position: fixed;
+    bottom: 0;
+    z-index: 5;
+
+    background-color: khaki;
+    color: #333;
+}
+.btn__container:hover {
+    cursor: pointer;
+    box-shadow: 10px 10px 10px khaki;
+    background-color: #333;
+    color: khaki;
+}
+
+.btn__text__container{
+    margin-left: 0.5em;
+    opacity: 1;
+    width:6em;
+    transition-duration: 0.5s;
+    transition-property: opacity, width;
+}
+.hide__btn__text__container {
+    opacity: 0;
+    width:0em;
+    transition-duration: 0.5s;
+}
+
+.btn__text {
+    margin-left:0px;
+    transition-duration: 0.5s;
+    transition-property: margin-left;
+}
+.hide__btn__text {
+    margin-left:-800px;
+    transition-duration: 0.1s;
+}
