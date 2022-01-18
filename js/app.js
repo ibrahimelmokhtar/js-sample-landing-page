@@ -177,6 +177,41 @@ function scrollToAnchor(event){
     }
 }
 
+function addNewSection(){
+    // get <main> and last <section> elements:
+    let mainSection = document.querySelector('main');
+    let lastSection = mainSection.lastElementChild;
+    // get last <section> data into single object:
+    let lastSectionData = {
+        'id': lastSection.getAttribute('id'),
+        'data-nav': lastSection.getAttribute('data-nav')
+    };
+
+    // manipulate last <section> data to create new <section> data:
+    let newDataNav = lastSectionData['data-nav'].split(' ');
+    // create new (id) and (data-nav) values through increasing old ones by 1:
+    let newSectionData = {
+        'id': [newDataNav[0], Number(newDataNav[1])+1].join(''),
+        'data-nav': [newDataNav[0], Number(newDataNav[1])+1].join(' ')
+    };
+
+    // create new <section> element:
+    let newSection = document.createElement('section');
+    newSection.setAttribute('id', newSectionData['id']);
+    newSection.setAttribute('data-nav', newSectionData['data-nav']);
+
+    // set new <section> innerHTML value:
+    newSection.innerHTML = `
+        <div class="landing__container">
+            <h2>${newSectionData['data-nav']}</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi fermentum metus faucibus lectus pharetra dapibus. Suspendisse potenti. Aenean aliquam elementum mi, ac euismod augue. Donec eget lacinia ex. Phasellus imperdiet porta orci eget mollis. Sed convallis sollicitudin mauris ac tincidunt. Donec bibendum, nulla eget bibendum consectetur, sem nisi aliquam leo, ut pulvinar quam nunc eu augue. Pellentesque maximus imperdiet elit a pharetra. Duis lectus mi, aliquam in mi quis, aliquam porttitor lacus. Morbi a tincidunt felis. Sed leo nunc, pharetra et elementum non, faucibus vitae elit. Integer nec libero venenatis libero ultricies molestie semper in tellus. Sed congue et odio sed euismod.</p>
+
+            <p>Aliquam a convallis justo. Vivamus venenatis, erat eget pulvinar gravida, ipsum lacus aliquet velit, vel luctus diam ipsum a diam. Cras eu tincidunt arcu, vitae rhoncus purus. Vestibulum fermentum consectetur porttitor. Suspendisse imperdiet porttitor tortor, eget elementum tortor mollis non.</p>
+        </div>`;
+    // append new <section> element to <main> element:
+    mainSection.appendChild(newSection);
+}
+
 
 /**
  * End Main Functions
@@ -244,4 +279,12 @@ btnAddNewSectionContainer.addEventListener('pointerleave', function(){
         btnAddNewSectionText.classList.remove('btn__text');
         btnAddNewSectionText.classList.add('hide__btn__text');
     }
+});
+
+// add new section
+btnAddNewSectionContainer.addEventListener('click', function(){
+    // add new section:
+    addNewSection();
+    // update the navigation bar:
+    buildNavBar();
 });
