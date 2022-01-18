@@ -77,10 +77,15 @@ section {
 .navbar__menu .menu__link {
     display: block;
     padding: 1em;
+    opacity: 1;
     font-weight: bold;
     text-decoration: none;
     color: #000;
+
+    transition-property: opacity, padding;
+    transition-duration: 0.8s;
 }
+
 
 .navbar__menu .active__menu__link,
 .navbar__menu .menu__link:hover {
@@ -96,6 +101,16 @@ section {
     top: 0;
     width: 100%;
     z-index: 5;
+    opacity: 1;
+
+    transition-property: opacity, z-index;
+    transition-duration: 0.8s;
+}
+
+.hide {
+    z-index: 0;
+    padding: 0em;
+    opacity: 0;
 }
 
 /* Footer Styles */

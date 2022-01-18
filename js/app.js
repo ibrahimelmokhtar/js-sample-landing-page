@@ -23,6 +23,7 @@
  *
 */
 
+const HIDE_TIMEOUT = 3*1000;
 const sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
 let sectionsIdList = [];    // create empty list to collect (id) attributes
 let sectionsDataList = [];  // create empty list to collect (data-nav) attributes
@@ -178,5 +179,32 @@ document.addEventListener('DOMContentLoaded', buildNavBar);     // wait until co
 // Scroll to section on link click
 navBarMenu.addEventListener('click', scrollToAnchor);           // add scrolling behavior to the clicked <li> item
 
+let isScrolling = null;
 // Set sections as active
-document.addEventListener('scroll', sectionInViewport);     // listen to (scoll) to change (active__section) class
+document.addEventListener('scroll', function(){
+    // elements that will be manipulated while (scrolling) and (no Scrolling):
+    let navBarMenu = document.querySelector('.navbar__menu');
+    let pageHeader = document.querySelector('.page__header');
+
+    // clear timeout when scrolling again:
+    clearTimeout(isScrolling);
+
+    // show (navbar__menu) and (page__header):
+    if (navBarMenu.classList.contains('hide')){
+        navBarMenu.classList.remove('hide');
+        pageHeader.classList.remove('hide');
+    }
+
+    // listen to (scoll) to change (active__section, active__menu__link) classes
+    sectionInViewport();
+
+    // set timeout when scroll has stopped:
+    isScrolling = setTimeout(function(){
+        // hide (navbar__menu) and (page__header):
+        if (!navBarMenu.classList.contains('hide')){
+            navBarMenu.classList.add('hide');
+            pageHeader.classList.add('hide');
+        }
+
+    }, HIDE_TIMEOUT);   // (HIDE_TIMEOUT) is set at the beggining of the file
+});
