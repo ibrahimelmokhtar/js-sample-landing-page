@@ -257,8 +257,17 @@ function deleteLastSection(){
     }
 }
 
+// scroll to the page's beginning:
 function scrollToTop(){
-    console.log("scroll to top");
+    // set scroll options:
+    const scrollOptions = {
+        top: '0',
+        left: '0',
+        behavior: 'smooth'
+    };
+
+    // scroll <body> element to specified options:
+    document.body.scrollTo(scrollOptions);
 }
 
 
