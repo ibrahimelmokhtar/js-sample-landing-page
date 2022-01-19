@@ -102,6 +102,9 @@ section {
     width: 100%;
     z-index: 5;
     opacity: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     transition-property: opacity, z-index;
     transition-duration: 0.8s;
@@ -323,4 +326,33 @@ section.active__section .landing__container::after {
 }
 #go__to__top .btn__text__container {
     width: 5em;
+}
+
+/* Page Logo Style */
+#logo {
+    margin-left: 1em;
+    padding: 0.5rem;
+    float: left;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-decoration: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-radius: 1rem;
+
+    transition-duration: 0.5s;
+    transition-property: color, background-color;
+}
+#logo:link,
+#logo:visited{
+    color: #004182;
+}
+#logo:hover{
+    color: #fff;
+    background-color: #333;
+    border-radius: 1rem;
+}
+#logo span {
+    margin-left: 0.5em;
 }
