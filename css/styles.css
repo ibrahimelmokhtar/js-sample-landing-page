@@ -211,7 +211,9 @@ section:nth-of-type(3n + 1) .landing__container::after {
 /* Note: your-active-class class is applied through javascript. You should update the class here and in the index.html to what you set in your javascript file.  */
 section.active__section {
     background: rgb(0, 0, 0);
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+    background: linear-gradient(0deg, rgba(53, 133, 139, 0.2) 0%, rgba(53, 133, 139, 0.5) 100%);
+    border-radius: 5em;
+    border: 2px solid #B762C1;
 }
 
 section.active__section .landing__container::before {
@@ -239,7 +241,7 @@ section.active__section .landing__container::after {
 }
 
 
-
+/* Full Button Container */
 .btn__container {
     border-radius: 100px;
     box-shadow: 10px 10px 10px #333;
@@ -268,6 +270,7 @@ section.active__section .landing__container::after {
     display: none;
 }
 
+/* Button Icon container */
 .btn__text__container{
     margin-left: 0.5em;
     opacity: 1;
@@ -280,6 +283,7 @@ section.active__section .landing__container::after {
     transition-duration: 0.5s;
 }
 
+/* Button Text Displayed */
 .btn__text {
     margin-left:0px;
     transition-duration: 0.5s;
@@ -294,7 +298,7 @@ section.active__section .landing__container::after {
     background: none;
 }
 
-
+/* Add Section Button */
 #add__section {
     bottom: 0;
     margin-bottom: 5.5rem;
@@ -303,6 +307,7 @@ section.active__section .landing__container::after {
     width:6em;
 }
 
+/* Delete Section Button */
 #delete__section {
     bottom: 0;
     margin-bottom: 1.5rem;
@@ -311,6 +316,7 @@ section.active__section .landing__container::after {
     width:7.5em;
 }
 
+/* Go-to-Top Button */
 #go__to__top {
     top: 0;
     margin-top: 7rem;
