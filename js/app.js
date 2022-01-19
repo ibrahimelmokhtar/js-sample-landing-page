@@ -25,6 +25,7 @@
 
 const HIDE_TIMEOUT = 2*1000;    // delay before hiding the page navigation bar
 const Y_FACTOR = 0.25;      // to sense the section before reaching it specifically
+const MIN_SECTION_THRESHOLD = 0;  // minimum number of displayed sections
 const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> element by its class name
 
 /**
@@ -199,18 +200,32 @@ function scrollToAnchor(event){
 function addNewSection(){
     // get <main> and last <section> elements:
     let mainSection = document.querySelector('main');
-    let lastSection = mainSection.lastElementChild;
-    // get last <section> data into single object:
-    let lastSectionData = {
-        'id': lastSection.getAttribute('id'),
-        'data-nav': lastSection.getAttribute('data-nav')
-    };
+
+    // check number of sections displayed:
+    let mainSections = document.querySelectorAll('main section');
+    let lastSectionData = {};   // data to be added to new section
+
+    // if there is NO displayed sections:
+    if (mainSections.length === 0){
+        lastSectionData = {
+            'id': 'section0',
+            'data-nav': 'Section 0'
+        };
+    }
+    else{
+        // get last <section> data into single object:
+        let lastSection = mainSection.lastElementChild;
+        lastSectionData = {
+            'id': lastSection.getAttribute('id'),
+            'data-nav': lastSection.getAttribute('data-nav')
+        };
+    }
 
     // manipulate last <section> data to create new <section> data:
     let newDataNav = lastSectionData['data-nav'].split(' ');
     // create new (id) and (data-nav) values through increasing old ones by 1:
     let newSectionData = {
-        'id': [newDataNav[0], Number(newDataNav[1])+1].join(''),
+        'id': [newDataNav[0].toLowerCase(), Number(newDataNav[1])+1].join(''),
         'data-nav': [newDataNav[0], Number(newDataNav[1])+1].join(' ')
     };
 
@@ -233,7 +248,13 @@ function addNewSection(){
 
 // delete the last section at the bottom of the page:
 function deleteLastSection(){
-    console.log('delete last setion .....');
+    // get <main> and last <section> elements:
+    let mainSections = document.querySelectorAll('main section');
+    // check number of sections againist specific threshold:
+    if (mainSections.length > MIN_SECTION_THRESHOLD){
+        // delete last <section> element:
+        mainSections[mainSections.length-1].remove();
+    }
 }
 
 
