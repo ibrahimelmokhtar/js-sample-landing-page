@@ -257,6 +257,10 @@ function deleteLastSection(){
     }
 }
 
+function scrollToTop(){
+    console.log("scroll to top");
+}
+
 
 /**
  * End Main Functions
@@ -321,18 +325,38 @@ for (let i=0; i<btnContainers.length; i++){
 
 for (let i=0; i<btnContainers.length; i++){
     btnContainers[i].addEventListener('click', function(){
-        switch (i){
-            case 0:     // add new section
-                addNewSection();
-                break;
-            case 1:     // delete last section
-                deleteLastSection();
-                break;
-            default:
-                console.log("out-of-range function");
+        if (btnContainers[i].getAttribute('id') === 'add__section'){
+            // add new section
+            addNewSection();
+        }
+        else if (btnContainers[i].getAttribute('id') === 'delete__section'){
+            // delete last section
+            deleteLastSection();
+        }
+        else if (btnContainers[i].getAttribute('id') === 'go__to__top'){
+            // scroll to top:
+            scrollToTop();
         }
 
         // update the navigation bar:
         buildNavBar();
     });
 }
+
+
+document.addEventListener('scroll', function(){
+    let btnGoToTop = document.querySelector('#go__to__top');
+    let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
+    if (scrollPosition > screen.height){
+        if (btnGoToTop.classList.contains('hide__btn__container')){
+            btnGoToTop.classList.remove('hide__btn__container');
+            btnGoToTop.classList.add('btn__container');
+        }
+    }
+    else{
+        if (btnGoToTop.classList.contains('btn__container')){
+        btnGoToTop.classList.remove('btn__container');
+        btnGoToTop.classList.add('hide__btn__container');
+        }
+    }
+});

@@ -251,23 +251,26 @@ section.active__section .landing__container::after {
     justify-content: space-between;
 
     position: fixed;
-    bottom: 0;
     z-index: 5;
 
     background-color: khaki;
     color: #333;
+    opacity: 0.4;
 }
 .btn__container:hover {
     cursor: pointer;
     box-shadow: 10px 10px 10px khaki;
     background-color: #333;
     color: khaki;
+    opacity: 1;
+}
+.hide__btn__container {
+    display: none;
 }
 
 .btn__text__container{
     margin-left: 0.5em;
     opacity: 1;
-    width:6em;
     transition-duration: 0.5s;
     transition-property: opacity, width;
 }
@@ -293,11 +296,25 @@ section.active__section .landing__container::after {
 
 
 #add__section {
-    margin-bottom: 6em;
+    bottom: 0;
+    margin-bottom: 5.5rem;
 }
+#add__section .btn__text__container {
+    width:6em;
+}
+
 #delete__section {
-    margin-bottom: 2em;
+    bottom: 0;
+    margin-bottom: 1.5rem;
 }
 #delete__section .btn__text__container{
     width:7.5em;
+}
+
+#go__to__top {
+    top: 0;
+    margin-top: 7rem;
+}
+#go__to__top .btn__text__container {
+    width: 5em;
 }
