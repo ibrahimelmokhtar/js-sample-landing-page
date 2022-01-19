@@ -245,7 +245,6 @@ section.active__section .landing__container::after {
     box-shadow: 10px 10px 10px #333;
     border: 1px solid khaki;
     padding: 0.5em;
-    margin-bottom: 2em;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -290,4 +289,15 @@ section.active__section .landing__container::after {
 
 .btn__text::selection{
     background: none;
+}
+
+
+#add__section {
+    margin-bottom: 6em;
+}
+#delete__section {
+    margin-bottom: 2em;
+}
+#delete__section .btn__text__container{
+    width:7.5em;
 }

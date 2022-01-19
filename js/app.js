@@ -33,9 +33,7 @@ const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> elem
  *
 */
 
-/**
- * collect (data-nav) value from each section
- */
+// collect (data-nav) value from each section
  function collectDataFromSections(){
     let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
     let sectionsDataList = [];
@@ -48,9 +46,7 @@ const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> elem
     return [sectionsDataList, sectionsIdList];
 }
 
-/**
- * update the status of active (section)
- */
+// update the status of active (section)
 function updateActiveClass(sectionInViewport){
     let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
     sectionInViewport.classList.add('active__section');       // add ('active__section') class
@@ -62,9 +58,7 @@ function updateActiveClass(sectionInViewport){
     }
 }
 
-/**
- * update the status of active (navigation list item)
- */
+// update the status of active (navigation list item)
 function updateActiveLinkClass(listItem){
     let linksList = navBarMenu.querySelectorAll('li a');
     listItem.classList.add('active__menu__link');       // add ('active__menu__link') class
@@ -76,9 +70,7 @@ function updateActiveLinkClass(listItem){
     }
 }
 
-/**
- * clear first navigation list item when scrolling above it
- */
+ // clear first navigation list item when scrolling above it
 function clearNavigationActiveStatus(){
     let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
     // current scroll position in viewport:
@@ -95,6 +87,32 @@ function clearNavigationActiveStatus(){
         if (listItem.classList.contains('active__menu__link')){
             listItem.classList.remove('active__menu__link');
         }
+    }
+}
+
+// show the button and its text:
+function showButton(btnElement, btnTextElement){
+    if (btnElement.classList.contains('hide__btn__text__container')){
+        // show the button:
+        btnElement.classList.remove('hide__btn__text__container');
+        btnElement.classList.add('btn__text__container');
+
+        // show the button text:
+        btnTextElement.classList.remove('hide__btn__text');
+        btnTextElement.classList.add('btn__text');
+    }
+}
+
+// hide the button and its text:
+function hideButton(btnElement, btnTextElement){
+    if (btnElement.classList.contains('btn__text__container')){
+        // hide the button:
+        btnElement.classList.remove('btn__text__container');
+        btnElement.classList.add('hide__btn__text__container');
+
+        // hide the button text:
+        btnTextElement.classList.remove('btn__text');
+        btnTextElement.classList.add('hide__btn__text');
     }
 }
 
@@ -177,6 +195,7 @@ function scrollToAnchor(event){
     }
 }
 
+// add new section at the bottom of the page:
 function addNewSection(){
     // get <main> and last <section> elements:
     let mainSection = document.querySelector('main');
@@ -210,6 +229,11 @@ function addNewSection(){
         </div>`;
     // append new <section> element to <main> element:
     mainSection.appendChild(newSection);
+}
+
+// delete the last section at the bottom of the page:
+function deleteLastSection(){
+    console.log('delete last setion .....');
 }
 
 
@@ -257,34 +281,37 @@ document.addEventListener('scroll', function(){
 
 
 // motion of the side button:
-let btnAddNewSectionContainer = document.querySelector('.btn__container');
-let btnAddNewSection = document.querySelector('.hide__btn__text__container');
-let btnAddNewSectionText = document.querySelector('.hide__btn__text');
+let btnContainers = document.querySelectorAll('.btn__container');
+let btnMain = document.querySelectorAll('.hide__btn__text__container');
+let btnText = document.querySelectorAll('.hide__btn__text');
 
-btnAddNewSectionContainer.addEventListener('pointerenter', function(){
-    if (btnAddNewSection.classList.contains('hide__btn__text__container')){
-        btnAddNewSection.classList.remove('hide__btn__text__container');
-        btnAddNewSection.classList.add('btn__text__container');
+for (let i=0; i<btnContainers.length; i++){
+    // add events for pointer entering the button container:
+    btnContainers[i].addEventListener('pointerenter', function(){
+        showButton(btnMain[i], btnText[i]);
+    });
 
-        btnAddNewSectionText.classList.remove('hide__btn__text');
-        btnAddNewSectionText.classList.add('btn__text');
-    }
-});
+    // add events for pointer leaving the button container:
+    btnContainers[i].addEventListener('pointerleave', function(){
+        hideButton(btnMain[i], btnText[i]);
+    });
+}
 
-btnAddNewSectionContainer.addEventListener('pointerleave', function(){
-    if (btnAddNewSection.classList.contains('btn__text__container')){
-        btnAddNewSection.classList.remove('btn__text__container');
-        btnAddNewSection.classList.add('hide__btn__text__container');
 
-        btnAddNewSectionText.classList.remove('btn__text');
-        btnAddNewSectionText.classList.add('hide__btn__text');
-    }
-});
+for (let i=0; i<btnContainers.length; i++){
+    btnContainers[i].addEventListener('click', function(){
+        switch (i){
+            case 0:     // add new section
+                addNewSection();
+                break;
+            case 1:     // delete last section
+                deleteLastSection();
+                break;
+            default:
+                console.log("out-of-range function");
+        }
 
-// add new section
-btnAddNewSectionContainer.addEventListener('click', function(){
-    // add new section:
-    addNewSection();
-    // update the navigation bar:
-    buildNavBar();
-});
+        // update the navigation bar:
+        buildNavBar();
+    });
+}
