@@ -10,50 +10,62 @@
 
 
 /* ---- Base Rules ---- */
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 body {
     background: rgb(136,203,171);
     background: linear-gradient(0deg, rgba(136,203,171,1) 0%, rgba(0,13,60,1) 100%);
     margin: 0;
-    font-family: 'Merriweather', serif;
+    font-family: "Merriweather", serif;
     color: #fff;
 }
 
 
 /* Typeography General*/
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 h1 {
-    font-family: 'Fira Sans', sans-serif;
+    font-family: "Fira Sans", sans-serif;
     font-size: 3em;
     margin: 2em 1rem;
 }
 
-@media only screen and (min-width: 35em){
+
+@media only screen and (min-width: 35em) {
     h1 {
         font-size: 7em;
         margin: 2em 4rem 1em;
     }
 }
 
+
 h2 {
     border-bottom: 1px solid #cc1;
-    font-family: 'Oxygen', Sans-Serif;
+    font-family: "Oxygen", Sans-Serif;
     font-size: 3em;
     color: #fff;
 }
+
 
 p {
     line-height: 1.6em;
     color: #eee;
 }
 
+
 /* ---- Layout Rules ---- */
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 main {
     margin: 10vh 1em 10vh;
 }
+
 
 .main-hero {
     min-height: 40vh;
     padding-top: 3em;
 }
+
 
 section {
     position: relative;
@@ -62,7 +74,8 @@ section {
 
 
 /* ---- Module Rules ---- */
-
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Navigation Styles*/
 .navbar__menu ul {
     padding-left: 0;
@@ -70,9 +83,11 @@ section {
     text-align: right;
 }
 
+
 .navbar__menu li {
     display: inline-block;
 }
+
 
 .navbar__menu .menu__link {
     display: block;
@@ -94,6 +109,9 @@ section {
     transition: ease 0.3s all;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Header Styles */
 .page__header {
     background: #fff;
@@ -110,12 +128,15 @@ section {
     transition-duration: 0.8s;
 }
 
+
 .hide {
     z-index: 0;
     padding: 0em;
     opacity: 0;
 }
 
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Footer Styles */
 .page__footer {
     background: #000;
@@ -123,11 +144,14 @@ section {
     color: #fff;
 }
 
-.page__footer p{
+
+.page__footer p {
     color: #fff;
 }
 
 
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* ---- Theme Rules ---- */
 /* Landing Container Styles */
 .landing__container {
@@ -135,12 +159,14 @@ section {
     text-align: left;
 }
 
-@media only screen and (min-width: 35em){
+
+@media only screen and (min-width: 35em) {
     .landing__container {
         max-width: 50em;
         padding: 4em;
     }
 }
+
 
 section:nth-of-type(even) .landing__container {
     margin-right: 0;
@@ -148,11 +174,14 @@ section:nth-of-type(even) .landing__container {
     text-align: right;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Background Circles */
 /* Note that background circles are created with psuedo elements before and after */
 /* Circles appear to be random do to use of :nth-of-type psuedo class */
 section:nth-of-type(odd) .landing__container::before {
-    content: '';
+    content: "";
     background: rgba(255, 255, 255, 0.187);
     position: absolute;
     z-index: -5;
@@ -163,8 +192,9 @@ section:nth-of-type(odd) .landing__container::before {
     transition: ease 0.5s all;
 }
 
+
 section:nth-of-type(even) .landing__container::before {
-    content: '';
+    content: "";
     background: rgb(255,255,255);
     background: linear-gradient(0deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.2) 100%);
     position: absolute;
@@ -178,8 +208,9 @@ section:nth-of-type(even) .landing__container::before {
     transition: ease 0.5s all;
 }
 
+
 section:nth-of-type(3n) .landing__container::after {
-    content: '';
+    content: "";
     background: rgb(255,255,255);
     background: linear-gradient(0deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.2) 100%);
     position: absolute;
@@ -193,8 +224,9 @@ section:nth-of-type(3n) .landing__container::after {
     transition: ease 0.5s all;
 }
 
+
 section:nth-of-type(3n + 1) .landing__container::after {
-    content: '';
+    content: "";
     background: rgb(255,255,255);
     background: linear-gradient(0deg, rgba(255,255,255,.1) 0%, rgba(255,255,255,.2) 100%);
     position: absolute;
@@ -209,9 +241,10 @@ section:nth-of-type(3n + 1) .landing__container::after {
 }
 
 
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* ---- Theme State Rules ---- */
 /* Section Active Styles */
-/* Note: your-active-class class is applied through javascript. You should update the class here and in the index.html to what you set in your javascript file.  */
 section.active__section {
     background: rgb(0, 0, 0);
     background: linear-gradient(0deg, rgba(53, 133, 139, 0.2) 0%, rgba(53, 133, 139, 0.5) 100%);
@@ -219,16 +252,21 @@ section.active__section {
     border: 2px solid #B762C1;
 }
 
+
 section.active__section .landing__container::before {
     opacity: 1;
     animation: rotate 4s linear 0s infinite forwards;
 }
+
 
 section.active__section .landing__container::after {
     opacity: 1;
     animation: rotate 5s linear 0s infinite forwards reverse;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Section Active Styles Keyframe Animations */
 @keyframes rotate {
 	from {
@@ -244,11 +282,13 @@ section.active__section .landing__container::after {
 }
 
 
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Full Button Container */
 .btn__container {
     border-radius: 100px;
     box-shadow: 10px 10px 10px #333;
-    border: 1px solid khaki;
+    border: 1px solid #F0E68C;
     padding: 0.5em;
     display: flex;
     flex-direction: row;
@@ -258,76 +298,109 @@ section.active__section .landing__container::after {
     position: fixed;
     z-index: 5;
 
-    background-color: khaki;
+    background-color: #F0E68C;
     color: #333;
-    opacity: 0.4;
+    opacity: 0.6;
 }
+
+
 .btn__container:hover {
     cursor: pointer;
-    box-shadow: 10px 10px 10px khaki;
+    box-shadow: 10px 10px 10px #F0E68C;
     background-color: #333;
-    color: khaki;
+    color: #F0E68C;
     opacity: 1;
 }
+
+
 .hide__btn__container {
     display: none;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Button Icon container */
-.btn__text__container{
+.btn__text__container {
     margin-left: 0.5em;
     opacity: 1;
     transition-duration: 0.5s;
     transition-property: opacity, width;
 }
+
+
 .hide__btn__text__container {
     opacity: 0;
-    width:0em;
+    width: 0;
     transition-duration: 0.5s;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Button Text Displayed */
 .btn__text {
-    margin-left:0px;
+    margin-left: 0;
     transition-duration: 0.5s;
     transition-property: margin-left;
 }
+
+
 .hide__btn__text {
     margin-left:-800px;
     transition-duration: 0.1s;
 }
 
-.btn__text::selection{
+
+.btn__text::selection {
     background: none;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Add Section Button */
 #add__section {
     bottom: 0;
     margin-bottom: 5.5rem;
 }
+
+
 #add__section .btn__text__container {
     width:6em;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Delete Section Button */
 #delete__section {
     bottom: 0;
     margin-bottom: 1.5rem;
 }
-#delete__section .btn__text__container{
-    width:7.5em;
+
+
+#delete__section .btn__text__container {
+    width: 7.5em;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Go-to-Top Button */
 #go__to__top {
     top: 0;
     margin-top: 7rem;
 }
+
+
 #go__to__top .btn__text__container {
     width: 5em;
 }
 
+
+/* ******************************************************************************* */
+/* ******************************************************************************* */
 /* Page Logo Style */
 #logo {
     margin-left: 1em;
@@ -344,15 +417,21 @@ section.active__section .landing__container::after {
     transition-duration: 0.5s;
     transition-property: color, background-color;
 }
+
+
 #logo:link,
-#logo:visited{
+#logo:visited {
     color: #004182;
 }
-#logo:hover{
+
+
+#logo:hover {
     color: #fff;
     background-color: #333;
     border-radius: 1rem;
 }
+
+
 #logo span {
     margin-left: 0.5em;
 }

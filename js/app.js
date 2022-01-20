@@ -23,10 +23,17 @@
  *
 */
 
-const HIDE_TIMEOUT = 2*1000;    // delay before hiding the page navigation bar
-const Y_FACTOR = 0.25;      // to sense the section before reaching it specifically
-const MIN_SECTION_THRESHOLD = 0;  // minimum number of displayed sections
-const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> element by its class name
+// delay before hiding the page navigation bar
+const HIDE_TIMEOUT = 2*1000;
+
+// to sense the section before reaching it specifically
+const Y_FACTOR = 0.25;
+
+// minimum number of displayed sections
+const MIN_SECTION_THRESHOLD = 0;
+
+// get <ul> element by its class name
+const navBarMenu = document.querySelector('.navbar__menu');
 
 /**
  * End Global Variables
@@ -34,48 +41,78 @@ const navBarMenu = document.querySelector('.navbar__menu');     // get <ul> elem
  *
 */
 
-// collect (data-nav) value from each section
- function collectDataFromSections(){
-    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
+/**
+* @description Collect (data-nav) value from each section
+* @returns {object} collected data
+*/
+ function collectDataFromSections() {
+     // get all <section> elements by name:
+    let sectionsList = document.querySelectorAll('section');
+
+    // initialize final resutls:
     let sectionsDataList = [];
     let sectionsIdList = [];
+
     // extract (data-nav) attribute value, then add it into the returned list:
-    sectionsList.forEach(function(singleSection){
+    sectionsList.forEach(function(singleSection) {
         sectionsDataList.push(singleSection.getAttribute('data-nav'));
         sectionsIdList.push(singleSection.getAttribute('id'));
     });
+
     return [sectionsDataList, sectionsIdList];
 }
 
-// update the status of active (section)
-function updateActiveClass(sectionInViewport){
-    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
-    sectionInViewport.classList.add('active__section');       // add ('active__section') class
+
+/**
+* @description Update the status of active (section)
+* @param {object} sectionInViewport
+*/
+function updateActiveClass(sectionInViewport) {
+    // get all <section> elements by name:
+    let sectionsList = document.querySelectorAll('section');
+
+    // add ('active__section') class:
+    sectionInViewport.classList.add('active__section');
+
     // remove ('active__section') class from other sections:
-    for (let j=0; j<sectionsList.length; j++){
-        if (sectionsList[j] !== sectionInViewport && sectionsList[j].classList.contains('active__section')){
+    for (let j=0; j<sectionsList.length; j++) {
+        if (sectionsList[j] !== sectionInViewport && sectionsList[j].classList.contains('active__section')) {
             sectionsList[j].classList.remove('active__section')
         }
     }
 }
 
-// update the status of active (navigation list item)
-function updateActiveLinkClass(listItem){
+
+/**
+* @description Update the status of active (navigation list item)
+* @param {object} listItem
+*/
+function updateActiveLinkClass(listItem) {
+    // get all <a> elements inside <li> elements by name:
     let linksList = navBarMenu.querySelectorAll('li a');
-    listItem.classList.add('active__menu__link');       // add ('active__menu__link') class
+
+    // add ('active__menu__link') class:
+    listItem.classList.add('active__menu__link');
+
     // remove ('active__menu__link') class from other sections:
-    for (let j=0; j<linksList.length; j++){
-        if (linksList[j] !== listItem && linksList[j].classList.contains('active__menu__link')){
+    for (let j=0; j<linksList.length; j++) {
+        if (linksList[j] !== listItem && linksList[j].classList.contains('active__menu__link')) {
             linksList[j].classList.remove('active__menu__link');
         }
     }
 }
 
- // clear first navigation list item when scrolling above it
-function clearNavigationActiveStatus(){
-    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
+
+/**
+* @description Clear first navigation list item when scrolling above it
+*/
+function clearNavigationActiveStatus() {
+    // get all <section> elements by name:
+    let sectionsList = document.querySelectorAll('section');
+
     // current scroll position in viewport:
     let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
+
     // select first section and its associated navigation list item:
     let section = sectionsList[0];
     let listItem = navBarMenu.querySelector(`li a[href="#${section.getAttribute('id')}"]`);
@@ -83,17 +120,24 @@ function clearNavigationActiveStatus(){
     // required conditions for specific section to be in viewport:
     let condition = (scrollPosition < section.offsetTop - section.offsetHeight*Y_FACTOR);
 
-    if (condition){
+    // check the result obtained from the constructed condition:
+    if (condition) {
         // check if that specific navigation list item DO have ('active__menu__link') class:
-        if (listItem.classList.contains('active__menu__link')){
+        if (listItem.classList.contains('active__menu__link')) {
             listItem.classList.remove('active__menu__link');
         }
     }
 }
 
-// show the button and its text:
-function showButton(btnElement, btnTextElement){
-    if (btnElement.classList.contains('hide__btn__text__container')){
+
+/**
+* @description Show the button and its text
+* @param {object} btnElement
+* @param {object} btnTextElement
+*/
+function showButton(btnElement, btnTextElement) {
+    // check the button to see if it's hidden/collapsed:
+    if (btnElement.classList.contains('hide__btn__text__container')) {
         // show the button:
         btnElement.classList.remove('hide__btn__text__container');
         btnElement.classList.add('btn__text__container');
@@ -104,9 +148,15 @@ function showButton(btnElement, btnTextElement){
     }
 }
 
-// hide the button and its text:
-function hideButton(btnElement, btnTextElement){
-    if (btnElement.classList.contains('btn__text__container')){
+
+/**
+* @description Hide the button and its text
+* @param {object} btnElement
+* @param {object} btnTextElement
+*/
+function hideButton(btnElement, btnTextElement) {
+    // check the button to see if it's shown:
+    if (btnElement.classList.contains('btn__text__container')) {
         // hide the button:
         btnElement.classList.remove('btn__text__container');
         btnElement.classList.add('hide__btn__text__container');
@@ -123,53 +173,74 @@ function hideButton(btnElement, btnTextElement){
  *
 */
 
-// build the nav
-function buildNavBar(){
+/**
+* @description Build the navigation bar
+*/
+function buildNavBar() {
     // collect (data-nav) attributes from page sections:
     let sectionsDataList, sectionsIdList;
     [sectionsDataList, sectionsIdList] = collectDataFromSections();
 
     // get <nav> element by its id:
     let navBarList = document.querySelector('#navbar__list');
+
     // clear <nav> list items:
-    while (navBarList.children.length !== 0){
+    while (navBarList.children.length !== 0) {
         navBarList.firstChild.remove();
     }
 
     // create virtual element:
     let fragment = document.createDocumentFragment();
+
     // construct <li> element for each section:
-    for (let i=0; i<sectionsDataList.length; i++){
-        let singleListItem = document.createElement('li');      // create empty <li> element
-        // singleListItem.textContent = sectionsDataList[i]; //set its textContent value
-        singleListItem.innerHTML = `<a href="#${sectionsIdList[i]}" class="menu__link">${sectionsDataList[i]}</a>`; //set its textContent value
-        fragment.appendChild(singleListItem);       // append actual <li> element to virtual element
+    for (let i=0; i<sectionsDataList.length; i++) {
+        // create empty <li> element:
+        let singleListItem = document.createElement('li');
+
+        //set its innerHTML value:
+        singleListItem.innerHTML = `<a href="#${sectionsIdList[i]}" class="menu__link">${sectionsDataList[i]}</a>`;
+
+        // append actual <li> element to virtual element:
+        fragment.appendChild(singleListItem);
     }
+
     // append virtual element to actual <ul>:
     navBarList.appendChild(fragment);
 }
 
-// Add class 'active' to section when near top of viewport
-function sectionInViewport(){
-    let sectionsList = document.querySelectorAll('section');  // get all <section> elements by name
+
+/**
+* @description Add class 'active' to section when near top of viewport
+*/
+function sectionInViewport() {
+    // get all <section> elements by name:
+    let sectionsList = document.querySelectorAll('section');
+
     // current scroll position in viewport:
     let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
+
     // check each section on the page:
-    for (let i=0; i<sectionsList.length; i++){
-        let section = sectionsList[i];      // select specific section
-        // select navigation list item associated with this specific section
+    for (let i=0; i<sectionsList.length; i++) {
+        // select specific section:
+        let section = sectionsList[i];
+
+        // select navigation list item associated with this specific section:
         let listItem = navBarMenu.querySelector(`li a[href="#${section.getAttribute('id')}"]`);
 
         // required conditions for specific section to be in viewport:
         let condition = (scrollPosition >= section.offsetTop - section.offsetHeight*Y_FACTOR) &&
         (scrollPosition < section.offsetTop + section.offsetHeight - section.offsetHeight*Y_FACTOR);
 
-        if (condition){
+        // check the result obtained from the constructed condition:
+        if (condition) {
             // check if that specific section do NOT have ('active__section') class:
             //          OR: that specific navigation list item do NOT have ('active__menu__link') class:
-            if (!section.classList.contains('active__section') || !listItem.classList.contains('active__menu__link')){
-                updateActiveClass(section);         // update sections status
-                updateActiveLinkClass(listItem);    // update navigation items status
+            if (!section.classList.contains('active__section') || !listItem.classList.contains('active__menu__link')) {
+                // update sections status:
+                updateActiveClass(section);
+
+                // update navigation items status:
+                updateActiveLinkClass(listItem);
             }
         }
     }
@@ -178,35 +249,48 @@ function sectionInViewport(){
     clearNavigationActiveStatus();
 }
 
-// Scroll to anchor ID using scrollTO event
-function scrollToAnchor(event){
+
+/**
+* @description Scroll to anchor ID using scrollTO event
+* @param {object} event
+*/
+function scrollToAnchor(event) {
     // prevent default scrollong behavior:
     event.preventDefault();
+
     // construct the scrolling behavior options:
     const scrollOptions = {
         behavior: 'smooth',
         block: 'start',
         inline: 'start'
     };
+
     // get (href) attribute value from the clicked <li> item:
     const selectedElement = document.querySelector(event.target.getAttribute('href'));
+
     // check if clicked item already has a (href) attribute; to prevent (Uncaught TypeError) errors:
-    if (selectedElement !== null){      // it's one of the <li> items
+    // true if it's one of the <li> items:
+    if (selectedElement !== null) {
         selectedElement.scrollIntoView(scrollOptions);   // scroll into desired view:
     }
 }
 
-// add new section at the bottom of the page:
-function addNewSection(){
+
+/**
+* @description Add new section at the bottom of the page
+*/
+function addNewSection() {
     // get <main> and last <section> elements:
     let mainSection = document.querySelector('main');
 
     // check number of sections displayed:
     let mainSections = document.querySelectorAll('main section');
-    let lastSectionData = {};   // data to be added to new section
+
+    // data to be added to new section:
+    let lastSectionData = {};
 
     // if there is NO displayed sections:
-    if (mainSections.length === 0){
+    if (mainSections.length === 0) {
         lastSectionData = {
             'id': 'section0',
             'data-nav': 'Section 0'
@@ -223,13 +307,14 @@ function addNewSection(){
 
     // manipulate last <section> data to create new <section> data:
     let newDataNav = lastSectionData['data-nav'].split(' ');
+
     // create new (id) and (data-nav) values through increasing old ones by 1:
     let newSectionData = {
         'id': [newDataNav[0].toLowerCase(), Number(newDataNav[1])+1].join(''),
         'data-nav': [newDataNav[0], Number(newDataNav[1])+1].join(' ')
     };
 
-    // create new <section> element:
+    // create new <section> element with new (id) and (data-nav) attribute values:
     let newSection = document.createElement('section');
     newSection.setAttribute('id', newSectionData['id']);
     newSection.setAttribute('data-nav', newSectionData['data-nav']);
@@ -242,23 +327,31 @@ function addNewSection(){
 
             <p>Aliquam a convallis justo. Vivamus venenatis, erat eget pulvinar gravida, ipsum lacus aliquet velit, vel luctus diam ipsum a diam. Cras eu tincidunt arcu, vitae rhoncus purus. Vestibulum fermentum consectetur porttitor. Suspendisse imperdiet porttitor tortor, eget elementum tortor mollis non.</p>
         </div>`;
+
     // append new <section> element to <main> element:
     mainSection.appendChild(newSection);
 }
 
-// delete the last section at the bottom of the page:
-function deleteLastSection(){
+
+/**
+* @description Delete the last section at the bottom of the page
+*/
+function deleteLastSection() {
     // get <main> and last <section> elements:
     let mainSections = document.querySelectorAll('main section');
+
     // check number of sections againist specific threshold:
-    if (mainSections.length > MIN_SECTION_THRESHOLD){
+    if (mainSections.length > MIN_SECTION_THRESHOLD) {
         // delete last <section> element:
         mainSections[mainSections.length-1].remove();
     }
 }
 
-// scroll to the page's beginning:
-function scrollToTop(){
+
+/**
+* @description Scroll to the page's beginning
+*/
+function scrollToTop() {
     // set scroll options:
     const scrollOptions = {
         top: '0',
@@ -269,7 +362,6 @@ function scrollToTop(){
     // scroll <body> element to specified options:
     document.body.scrollTo(scrollOptions);
 }
-
 
 /**
  * End Main Functions
@@ -285,7 +377,7 @@ navBarMenu.addEventListener('click', scrollToAnchor);           // add scrolling
 
 let isScrolling = null;
 // Set sections as active
-document.addEventListener('scroll', function(){
+document.addEventListener('scroll', function() {
     // elements that will be manipulated while (scrolling) and (no Scrolling):
     let navBarMenu = document.querySelector('.navbar__menu');
     let pageHeader = document.querySelector('.page__header');
@@ -294,7 +386,7 @@ document.addEventListener('scroll', function(){
     clearTimeout(isScrolling);
 
     // show (navbar__menu) and (page__header):
-    if (navBarMenu.classList.contains('hide')){
+    if (navBarMenu.classList.contains('hide')) {
         navBarMenu.classList.remove('hide');
         pageHeader.classList.remove('hide');
     }
@@ -303,9 +395,9 @@ document.addEventListener('scroll', function(){
     sectionInViewport();
 
     // set timeout when scroll has stopped:
-    isScrolling = setTimeout(function(){
+    isScrolling = setTimeout(function() {
         // hide (navbar__menu) and (page__header):
-        if (!navBarMenu.classList.contains('hide')){
+        if (!navBarMenu.classList.contains('hide')) {
             navBarMenu.classList.add('hide');
             pageHeader.classList.add('hide');
         }
@@ -319,30 +411,30 @@ let btnContainers = document.querySelectorAll('.btn__container');
 let btnMain = document.querySelectorAll('.hide__btn__text__container');
 let btnText = document.querySelectorAll('.hide__btn__text');
 
-for (let i=0; i<btnContainers.length; i++){
+for (let i=0; i<btnContainers.length; i++) {
     // add events for pointer entering the button container:
-    btnContainers[i].addEventListener('pointerenter', function(){
+    btnContainers[i].addEventListener('pointerenter', function() {
         showButton(btnMain[i], btnText[i]);
     });
 
     // add events for pointer leaving the button container:
-    btnContainers[i].addEventListener('pointerleave', function(){
+    btnContainers[i].addEventListener('pointerleave', function() {
         hideButton(btnMain[i], btnText[i]);
     });
 }
 
 
-for (let i=0; i<btnContainers.length; i++){
-    btnContainers[i].addEventListener('click', function(){
-        if (btnContainers[i].getAttribute('id') === 'add__section'){
+for (let i=0; i<btnContainers.length; i++) {
+    btnContainers[i].addEventListener('click', function() {
+        if (btnContainers[i].getAttribute('id') === 'add__section') {
             // add new section
             addNewSection();
         }
-        else if (btnContainers[i].getAttribute('id') === 'delete__section'){
+        else if (btnContainers[i].getAttribute('id') === 'delete__section') {
             // delete last section
             deleteLastSection();
         }
-        else if (btnContainers[i].getAttribute('id') === 'go__to__top'){
+        else if (btnContainers[i].getAttribute('id') === 'go__to__top') {
             // scroll to top:
             scrollToTop();
         }
@@ -353,17 +445,17 @@ for (let i=0; i<btnContainers.length; i++){
 }
 
 
-document.addEventListener('scroll', function(){
+document.addEventListener('scroll', function() {
     let btnGoToTop = document.querySelector('#go__to__top');
     let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
-    if (scrollPosition > screen.height){
-        if (btnGoToTop.classList.contains('hide__btn__container')){
+    if (scrollPosition > screen.height) {
+        if (btnGoToTop.classList.contains('hide__btn__container')) {
             btnGoToTop.classList.remove('hide__btn__container');
             btnGoToTop.classList.add('btn__container');
         }
     }
     else{
-        if (btnGoToTop.classList.contains('btn__container')){
+        if (btnGoToTop.classList.contains('btn__container')) {
         btnGoToTop.classList.remove('btn__container');
         btnGoToTop.classList.add('hide__btn__container');
         }
