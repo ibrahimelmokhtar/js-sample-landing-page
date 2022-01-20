@@ -23,17 +23,25 @@
  *
 */
 
-// delay before hiding the page navigation bar
+// Delay before hiding the page navigation bar:
 const HIDE_TIMEOUT = 2*1000;
 
-// to sense the section before reaching it specifically
+// Used to sense the section before reaching it specifically:
 const Y_FACTOR = 0.25;
 
-// minimum number of displayed sections
+// Set minimum number of displayed sections:
 const MIN_SECTION_THRESHOLD = 0;
 
-// get <ul> element by its class name
+// Get <ul> element by its class name
 const navBarMenu = document.querySelector('.navbar__menu');
+
+// Used for detecting scrolling event:
+let isScrolling = null;
+
+// Used to mainpulate buttons:
+let btnContainers = document.querySelectorAll('.btn__container');
+let btnMain = document.querySelectorAll('.hide__btn__text__container');
+let btnText = document.querySelectorAll('.hide__btn__text');
 
 /**
  * End Global Variables
@@ -165,6 +173,38 @@ function hideButton(btnElement, btnTextElement) {
         btnTextElement.classList.remove('btn__text');
         btnTextElement.classList.add('hide__btn__text');
     }
+}
+
+
+/**
+* @description Check scrolling event to set sections as active if scrolling
+*                OR: to hide navigation bar if not scrolling for a while
+*/
+function checkScrolling() {
+    // elements that will be manipulated while (scrolling) and (no Scrolling):
+    let navBarMenu = document.querySelector('.navbar__menu');
+    let pageHeader = document.querySelector('.page__header');
+
+    // clear timeout when scrolling again:
+    clearTimeout(isScrolling);
+
+    // show (navbar__menu) and (page__header):
+    if (navBarMenu.classList.contains('hide')) {
+        navBarMenu.classList.remove('hide');
+        pageHeader.classList.remove('hide');
+    }
+
+    // listen to (scoll) to change (active__section, active__menu__link) classes:
+    sectionInViewport();
+
+    // set timeout when scroll has stopped:
+    isScrolling = setTimeout(function() {
+        // hide (navbar__menu) and (page__header):
+        if (!navBarMenu.classList.contains('hide')) {
+            navBarMenu.classList.add('hide');
+            pageHeader.classList.add('hide');
+        }
+    }, HIDE_TIMEOUT);   // (HIDE_TIMEOUT) is set at the beggining of the file
 }
 
 /**
@@ -363,54 +403,56 @@ function scrollToTop() {
     document.body.scrollTo(scrollOptions);
 }
 
+
+/**
+* @description Show/Hide (Go to Top) button at specific height
+*/
+function DisplayGoToTopButton() {
+    // get the button by its id:
+    let btnGoToTop = document.querySelector('#go__to__top');
+
+    // current scroll position in viewport:
+    let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
+
+    // check the displayed height of the current viewport:
+    //      to show the button if it's hidden:
+    if (scrollPosition > screen.height) {
+        if (btnGoToTop.classList.contains('hide__btn__container')) {
+            btnGoToTop.classList.remove('hide__btn__container');
+            btnGoToTop.classList.add('btn__container');
+        }
+    }
+    else {
+        // hide the shown button if the displayed height is less than the current viewport:
+        if (btnGoToTop.classList.contains('btn__container')) {
+        btnGoToTop.classList.remove('btn__container');
+        btnGoToTop.classList.add('hide__btn__container');
+        }
+    }
+}
+
 /**
  * End Main Functions
  * Begin Events
  *
 */
 
-// Build menu
-document.addEventListener('DOMContentLoaded', buildNavBar);     // wait until content is loaded into DOM
-
-// Scroll to section on link click
-navBarMenu.addEventListener('click', scrollToAnchor);           // add scrolling behavior to the clicked <li> item
-
-let isScrolling = null;
-// Set sections as active
-document.addEventListener('scroll', function() {
-    // elements that will be manipulated while (scrolling) and (no Scrolling):
-    let navBarMenu = document.querySelector('.navbar__menu');
-    let pageHeader = document.querySelector('.page__header');
-
-    // clear timeout when scrolling again:
-    clearTimeout(isScrolling);
-
-    // show (navbar__menu) and (page__header):
-    if (navBarMenu.classList.contains('hide')) {
-        navBarMenu.classList.remove('hide');
-        pageHeader.classList.remove('hide');
-    }
-
-    // listen to (scoll) to change (active__section, active__menu__link) classes
-    sectionInViewport();
-
-    // set timeout when scroll has stopped:
-    isScrolling = setTimeout(function() {
-        // hide (navbar__menu) and (page__header):
-        if (!navBarMenu.classList.contains('hide')) {
-            navBarMenu.classList.add('hide');
-            pageHeader.classList.add('hide');
-        }
-
-    }, HIDE_TIMEOUT);   // (HIDE_TIMEOUT) is set at the beggining of the file
-});
+// Build menu:
+//      Wait until content is loaded into DOM:
+document.addEventListener('DOMContentLoaded', buildNavBar);
 
 
-// motion of the side button:
-let btnContainers = document.querySelectorAll('.btn__container');
-let btnMain = document.querySelectorAll('.hide__btn__text__container');
-let btnText = document.querySelectorAll('.hide__btn__text');
+// Scroll to section on link click:
+//      Add scrolling behavior to the clicked <li> item:
+navBarMenu.addEventListener('click', scrollToAnchor);
 
+
+// Check scrolling and Set sections as active:
+document.addEventListener('scroll', checkScrolling);
+
+
+// Loop to add motion to the side buttons:
+//      Pointer enter/leave events:
 for (let i=0; i<btnContainers.length; i++) {
     // add events for pointer entering the button container:
     btnContainers[i].addEventListener('pointerenter', function() {
@@ -424,19 +466,24 @@ for (let i=0; i<btnContainers.length; i++) {
 }
 
 
+// Loop to add an event listeners functionality to each button:
 for (let i=0; i<btnContainers.length; i++) {
     btnContainers[i].addEventListener('click', function() {
         if (btnContainers[i].getAttribute('id') === 'add__section') {
-            // add new section
+            // Add new section:
             addNewSection();
         }
         else if (btnContainers[i].getAttribute('id') === 'delete__section') {
-            // delete last section
+            // Delete last section:
             deleteLastSection();
         }
         else if (btnContainers[i].getAttribute('id') === 'go__to__top') {
-            // scroll to top:
+            // Scroll to top:
             scrollToTop();
+        }
+        else {
+            // Just an error message for future upgrades:
+            window.alert('You need to add this functionality first');
         }
 
         // update the navigation bar:
@@ -445,19 +492,5 @@ for (let i=0; i<btnContainers.length; i++) {
 }
 
 
-document.addEventListener('scroll', function() {
-    let btnGoToTop = document.querySelector('#go__to__top');
-    let scrollPosition = -1*document.documentElement.getBoundingClientRect().top;
-    if (scrollPosition > screen.height) {
-        if (btnGoToTop.classList.contains('hide__btn__container')) {
-            btnGoToTop.classList.remove('hide__btn__container');
-            btnGoToTop.classList.add('btn__container');
-        }
-    }
-    else{
-        if (btnGoToTop.classList.contains('btn__container')) {
-        btnGoToTop.classList.remove('btn__container');
-        btnGoToTop.classList.add('hide__btn__container');
-        }
-    }
-});
+// Show/Hide (Go to Top) button at specific height:
+document.addEventListener('scroll', DisplayGoToTopButton);
