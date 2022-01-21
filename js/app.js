@@ -400,7 +400,7 @@ function scrollToTop() {
     };
 
     // scroll <body> element to specified options:
-    document.body.scrollTo(scrollOptions);
+    window.scrollTo(scrollOptions);
 }
 
 
